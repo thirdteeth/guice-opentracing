@@ -57,7 +57,7 @@ public class OpenTracingInterceptor implements MethodInterceptor {
         builder.withTag(getBeanTagName(), invocation.getThis().getClass().getName());
 
         int index = -1;
-        for (int i = 0; i < invocation.getArguments().length; i += 1) {
+        for (int i = 0; i < invocation.getArguments().length; i++) {
             final Object parameter = invocation.getArguments()[i];
             if (parameter instanceof SpanContext) {
                 LOG.fine("Found parameter as span context. Using it as the parent of this new span");
