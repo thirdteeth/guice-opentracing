@@ -16,11 +16,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD})
 public @interface Traced {
-    /**
-     * enable opentracing
-     * @return default true
-     */
-    boolean value() default true;
 }

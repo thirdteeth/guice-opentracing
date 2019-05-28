@@ -10,7 +10,6 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.thirdteeth.guice.opentracing.Traced;
 
-import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
 /**
@@ -47,10 +46,6 @@ public class OpenTracingInterceptor implements MethodInterceptor {
             return invocation.proceed();
         }
 
-        if (!isTrace(invocation)) {
-            return invocation.proceed();
-        }
-
         final Tracer tracer = GlobalTracer.get();
         final Tracer.SpanBuilder builder = tracer.buildSpan(invocation.getMethod().getName());
         builder.withTag(Tags.COMPONENT.getKey(), getComponent());
@@ -82,20 +77,6 @@ public class OpenTracingInterceptor implements MethodInterceptor {
             }
             return invocation.proceed();
         }
-    }
-
-    private boolean isTrace(final MethodInvocation invocation) {
-        final Method method = invocation.getMethod();
-        final Class<?> clazz = method.getDeclaringClass();
-        boolean trace = true;
-        if (clazz.isAnnotationPresent(Traced.class)) {
-            trace = clazz.getAnnotation(Traced.class).value();
-        }
-
-        if (method.isAnnotationPresent(Traced.class)) {
-            trace = method.getAnnotation(Traced.class).value();
-        }
-        return trace;
     }
 
     /**
