@@ -1,7 +1,7 @@
 Guice-OpenTracing
 ===
 
-A set of [OpenTracing](https://opentracing.io/) encodings for [Guice](https://github.com/google/guice).
+[OpenTracing](https://opentracing.io/) cdi for [Guice](https://github.com/google/guice).
 
 Include in your project:
 
