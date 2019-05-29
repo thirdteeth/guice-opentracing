@@ -1,6 +1,5 @@
 package org.thirdteeth.guice.opentracing;
 
-import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -14,7 +13,6 @@ import java.lang.annotation.RetentionPolicy;
  * When used at the type, marks all methods on the type for tracing by the interceptor. When used at the method,
  * marks the method for tracing by the interceptor.
  */
-@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Traced {

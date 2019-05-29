@@ -7,7 +7,7 @@ import com.google.inject.matcher.Matchers;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.thirdteeth.guice.interceptor.OpenTracingInterceptor;
-import org.thirdteeth.guice.opentracing.Traced;
+import org.thirdteeth.guice.matcher.TracedMatcher;
 
 /**
  * The guice module for opentracing {@link Tracer} and bind {@link OpenTracingInterceptor} into guice
@@ -26,7 +26,7 @@ public final class OpenTracingModule extends AbstractModule {
      */
     @Override
     protected void configure() {
-        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Traced.class),
+        bindInterceptor(Matchers.any(), new TracedMatcher(),
                 new OpenTracingInterceptor());
     }
 
