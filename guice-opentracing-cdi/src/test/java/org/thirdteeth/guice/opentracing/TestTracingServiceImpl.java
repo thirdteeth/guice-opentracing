@@ -7,12 +7,17 @@ public class TestTracingServiceImpl implements TestTracingService {
     private static final Logger LOG = Logger.getLogger(TestTracingServiceImpl.class.getName());
 
     @Override
-    public void testMethod() {
+    public void noTraced() {
+        LOG.fine("test message");
+    }
+
+    @Traced
+    public void traced() {
         LOG.fine("test message");
     }
 
     @Traced(value = false)
-    public void testMethod2() {
+    public void tracedValueFalse() {
         LOG.fine("test message");
     }
 }

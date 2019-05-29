@@ -11,20 +11,22 @@ public class TracedTests {
     @Test
     public void testTraced() throws NoSuchMethodException {
         Class clazz = TestTracingServiceImpl.class;
-        Method method = clazz.getMethod("testMethod", null);
+        Method method = clazz.getMethod("noTraced", null);
         Assert.assertTrue(new TracedMatcher().matches(method));
-        Method method1 = clazz.getMethod("testMethod2", null);
+        Method method1 = clazz.getMethod("traced", null);
         Assert.assertFalse(new TracedMatcher().matches(method1));
+        Method method2 = clazz.getMethod("tracedValueFalse", null);
+        Assert.assertTrue(new TracedMatcher().matches(method2));
     }
 
     @Test
     public void testNotTraced() throws NoSuchMethodException {
-        Class clazz = TestNoTracingServcieImpl.class;
-        Method method = clazz.getMethod("testMethod", null);
+        Class clazz = TestNoTracingServiceImpl.class;
+        Method method = clazz.getMethod("noTraced", null);
         Assert.assertFalse(new TracedMatcher().matches(method));
-        Method method1 = clazz.getMethod("testMethod2", null);
+        Method method1 = clazz.getMethod("traced", null);
         Assert.assertTrue(new TracedMatcher().matches(method1));
-        Method method2 = clazz.getMethod("testMethod3", null);
+        Method method2 = clazz.getMethod("tracedValueFalse", null);
         Assert.assertFalse(new TracedMatcher().matches(method2));
     }
 }

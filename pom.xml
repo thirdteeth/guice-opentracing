@@ -103,6 +103,12 @@
         <artifactId>junit</artifactId>
         <version>4.12</version>
       </dependency>
+      <dependency>
+        <groupId>io.opentracing</groupId>
+        <artifactId>opentracing-mock</artifactId>
+        <version>${version.io.opentracing}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
