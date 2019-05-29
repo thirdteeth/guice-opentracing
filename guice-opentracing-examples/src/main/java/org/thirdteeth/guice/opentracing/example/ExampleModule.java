@@ -7,5 +7,6 @@ public class ExampleModule extends AbstractModule {
     protected void configure() {
         bind(OrderService.class).to(OrderServiceImpl.class);
         bind(InventoryService.class).to(InventoryServiceImpl.class);
+        bind(PriceService.class).to(PriceServiceImpl.class);
     }
 }

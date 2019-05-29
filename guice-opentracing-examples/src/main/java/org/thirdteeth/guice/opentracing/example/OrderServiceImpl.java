@@ -10,9 +10,13 @@ public class OrderServiceImpl implements OrderService {
     private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     @Inject
     private InventoryService inventoryService;
+
+    @Inject
+    private PriceService priceService;
     @Override
     public void placeOrder() {
         inventoryService.lockInventory();
+        priceService.calculatePrice();
         logger.info("order placed");
     }
 }
