@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.thirdteeth</groupId>
   <artifactId>guice-opentracing</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 
   <packaging>pom</packaging>
   <name>guice-opentracing</name>

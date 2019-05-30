@@ -14,9 +14,9 @@ public class TracedTests {
         Method method = clazz.getMethod("noTraced", null);
         Assert.assertTrue(new TracedMatcher().matches(method));
         Method method1 = clazz.getMethod("traced", null);
-        Assert.assertFalse(new TracedMatcher().matches(method1));
+        Assert.assertTrue(new TracedMatcher().matches(method1));
         Method method2 = clazz.getMethod("tracedValueFalse", null);
-        Assert.assertTrue(new TracedMatcher().matches(method2));
+        Assert.assertFalse(new TracedMatcher().matches(method2));
     }
 
     @Test

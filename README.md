@@ -9,7 +9,7 @@ Include in your project:
 <dependency>
   <groupId>com.github.thirdteeth</groupId>
   <artifactId>guice-opentracing-cdi</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 </dependency>
 
 ```
