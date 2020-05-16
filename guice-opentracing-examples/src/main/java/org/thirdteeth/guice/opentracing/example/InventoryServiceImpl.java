@@ -8,7 +8,9 @@ import org.thirdteeth.guice.opentracing.Traced;
 public class InventoryServiceImpl implements InventoryService {
     private Logger logger = LoggerFactory.getLogger(InventoryServiceImpl.class);
     @Override
-    public void lockInventory() {
-        logger.info("inventory locked");
+    @Traced(logInputs = true, logOutput = true)
+    public String lockInventory(long quantity) {
+        logger.info("inventory locked " + quantity);
+        return "locked " + quantity;
     }
 }

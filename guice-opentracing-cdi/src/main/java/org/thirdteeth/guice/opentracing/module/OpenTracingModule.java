@@ -1,10 +1,10 @@
-package org.thirdteeth.guice.module;
+package org.thirdteeth.guice.opentracing.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
 import io.opentracing.Tracer;
-import org.thirdteeth.guice.interceptor.OpenTracingInterceptor;
-import org.thirdteeth.guice.matcher.TracedMatcher;
+import org.thirdteeth.guice.opentracing.interceptor.OpenTracingInterceptor;
+import org.thirdteeth.guice.opentracing.matcher.TracedMatcher;
 
 /**
  * The guice module for opentracing {@link Tracer} and bind {@link OpenTracingInterceptor} into guice

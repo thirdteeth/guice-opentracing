@@ -13,4 +13,4 @@
  * limitations under the License.
  */
 
-package org.thirdteeth.guice.module;
+package org.thirdteeth.guice.opentracing.interceptor;

@@ -21,4 +21,16 @@ public @interface Traced {
      * @return default true
      */
     boolean value() default true;
+
+    /**
+     * log the method inputs
+     * @return default false
+     */
+    boolean logInputs() default false;
+
+    /**
+     * log the method output
+     * @return default false
+     */
+    boolean logOutput() default false;
 }

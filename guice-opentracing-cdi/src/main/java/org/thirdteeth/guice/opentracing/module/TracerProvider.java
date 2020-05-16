@@ -1,4 +1,4 @@
-package org.thirdteeth.guice.module;
+package org.thirdteeth.guice.opentracing.module;
 
 import io.opentracing.Tracer;
 import io.opentracing.contrib.tracerresolver.TracerResolver;

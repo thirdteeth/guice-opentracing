@@ -2,7 +2,7 @@ package org.thirdteeth.guice.opentracing;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.thirdteeth.guice.matcher.TracedMatcher;
+import org.thirdteeth.guice.opentracing.matcher.TracedMatcher;
 
 import java.lang.reflect.Method;
 
@@ -10,7 +10,7 @@ public class TracedTests {
 
     @Test
     public void testTraced() throws NoSuchMethodException {
-        Class clazz = TestTracingServiceImpl.class;
+        Class<TestTracingServiceImpl> clazz = TestTracingServiceImpl.class;
         Method method = clazz.getMethod("noTraced", null);
         Assert.assertTrue(new TracedMatcher().matches(method));
         Method method1 = clazz.getMethod("traced", null);
@@ -21,7 +21,7 @@ public class TracedTests {
 
     @Test
     public void testNotTraced() throws NoSuchMethodException {
-        Class clazz = TestNoTracingServiceImpl.class;
+        Class<TestNoTracingServiceImpl> clazz = TestNoTracingServiceImpl.class;
         Method method = clazz.getMethod("noTraced", null);
         Assert.assertFalse(new TracedMatcher().matches(method));
         Method method1 = clazz.getMethod("traced", null);

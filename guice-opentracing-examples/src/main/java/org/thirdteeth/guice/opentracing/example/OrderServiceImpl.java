@@ -15,8 +15,9 @@ public class OrderServiceImpl implements OrderService {
     private PriceService priceService;
     @Override
     public void placeOrder() {
-        inventoryService.lockInventory();
+        inventoryService.lockInventory(10);
         priceService.calculatePrice();
         logger.info("order placed");
+        throw new IllegalArgumentException("test");
     }
 }

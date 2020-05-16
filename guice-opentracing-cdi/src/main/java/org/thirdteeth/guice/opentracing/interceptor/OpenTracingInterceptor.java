@@ -1,15 +1,21 @@
-package org.thirdteeth.guice.interceptor;
+package org.thirdteeth.guice.opentracing.interceptor;
 
 import io.opentracing.Scope;
 import io.opentracing.Span;
 import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
+import io.opentracing.log.Fields;
 import io.opentracing.tag.Tags;
 import io.opentracing.util.GlobalTracer;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.thirdteeth.guice.opentracing.Traced;
+import org.thirdteeth.guice.opentracing.helper.TracedHelper;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -46,11 +52,45 @@ public class OpenTracingInterceptor implements MethodInterceptor {
             return invocation.proceed();
         }
 
+        final Method method = invocation.getMethod();
+        final Optional<Traced> traced = TracedHelper.getTraced(method);
+        final boolean logInputs = traced.map(Traced::logInputs).orElse(false);
+        final boolean logOutput = traced.map(Traced::logOutput).orElse(false);
         final Tracer tracer = GlobalTracer.get();
         final Tracer.SpanBuilder builder = tracer.buildSpan(invocation.getMethod().getName());
         builder.withTag(Tags.COMPONENT.getKey(), getComponent());
         builder.withTag(getBeanTagName(), invocation.getThis().getClass().getName());
+        final int index = getExistingSpanIndex(invocation, builder);
 
+        try (Scope scope = builder.startActive(true)) {
+
+            if (index >= 0) {
+                LOG.fine("Overriding the original span context with our new context.");
+                invocation.getArguments()[index] = scope.span().context();
+            }
+            if (logInputs) {
+                logMethodInputs(scope.span(), invocation);
+            }
+            try {
+                final Object output = invocation.proceed();
+                if (logOutput) {
+                    final Map<String, Object> logs = new HashMap<>();
+                    logs.put(Fields.MESSAGE, invocation.getMethod().getName() + " output is" + output);
+                    scope.span().log(logs);
+                }
+                return output;
+            } catch (Exception ex) {
+                final Map<String, Object> logs = new HashMap<>();
+                logs.put(Fields.EVENT, "error");
+                logs.put(Fields.ERROR_OBJECT, ex);
+                logs.put(Fields.MESSAGE, ex.getMessage());
+                scope.span().log(logs);
+                throw ex;
+            }
+        }
+    }
+
+    private int getExistingSpanIndex(final MethodInvocation invocation, final Tracer.SpanBuilder builder) {
         int index = -1;
         for (int i = 0; i < invocation.getArguments().length; i++) {
             final Object parameter = invocation.getArguments()[i];
@@ -68,14 +108,19 @@ public class OpenTracingInterceptor implements MethodInterceptor {
                 break;
             }
         }
+        return index;
+    }
 
-        try (Scope scope = builder.startActive(true)) {
+    private void logMethodInputs(final Span span, final MethodInvocation invocation) {
 
-            if (index >= 0) {
-                LOG.fine("Overriding the original span context with our new context.");
-                invocation.getArguments()[index] = scope.span().context();
+        for (int i = 0; i < invocation.getArguments().length; i++) {
+            final Object parameter = invocation.getArguments()[i];
+            final Map<String, Object> logs = new HashMap<>();
+            if (parameter instanceof SpanContext || parameter instanceof Span) {
+                continue;
             }
-            return invocation.proceed();
+            logs.put(Fields.MESSAGE, invocation.getMethod().getName() + " input[" + i + "] is " + invocation.getArguments()[i]);
+            span.log(logs);
         }
     }
 
