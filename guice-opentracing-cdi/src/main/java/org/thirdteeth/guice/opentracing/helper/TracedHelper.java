@@ -17,7 +17,7 @@ public final class TracedHelper {
     /**
      * get the Traced annotation object from method if there is
      * @param method get Traced annotation object from this method or class of this method
-     * @return Optional<Traced>
+     * @return Optional Traced
      */
     public static Optional<Traced> getTraced(final Method method) {
         final Class<?> clazz = method.getDeclaringClass();
